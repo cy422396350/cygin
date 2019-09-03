@@ -7,7 +7,11 @@ func InitRoute() *gin.Engine {
 	r := gin.Default()
 	//可恶的小图标pass
 	r.StaticFile("/favicon.ico", "./favicon.ico")
-	// IndexApi为一个handler
-	r.GET("/", IndexApi)
+	// 从redis集群里面取账号密码
+	name, password := GetAuthUserInfo()
+	authorized := r.Group("/", gin.BasicAuth(gin.Accounts{
+		name: password,
+	}))
+	authorized.POST("/index", IndexApi)
 	return r
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	db "github.com/cy422396350/cygin/database"
+	redis "github.com/cy422396350/cygin/redis"
 	"github.com/cy422396350/cygin/route"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -71,6 +72,7 @@ func main() {
 	//r.POST("/testing", bindTest)
 	//当整个程序完成之后关闭数据库连接
 	defer db.SqlDB.Close()
+	defer redis.RedisCy.Close()
 	r := route.InitRoute()
 	r.Run(":8080")
 }

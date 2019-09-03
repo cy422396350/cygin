@@ -7,6 +7,16 @@ import (
 	"net/http"
 )
 
+func GetAuthUserInfo() (name string, password string) {
+	p := models.Person{}
+	name, err := p.GetKey(gin.AuthUserKey)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	password, err = p.GetKey("password")
+	return
+}
+
 func IndexApi(c *gin.Context) {
 	p := models.Person{Id: 1}
 	person, err := p.GetPerson()
@@ -16,5 +26,6 @@ func IndexApi(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"person": person,
+		"secret": 111,
 	})
 }
